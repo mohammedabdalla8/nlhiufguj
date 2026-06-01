@@ -1,19 +1,18 @@
-name: Android CI
+name: Build Android APK
 
 on:
   push:
-    branches: [ "main" ] # أو اسم الفرع الخاص بك (master)
-  pull_request:
-    branches: [ "main" ]
+    branches: [ "main" ] # تأكد إن ده اسم الفرع بتاعك (main أو master)
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout the code
+      uses: actions/checkout@v4
 
-    - name: set up JDK 17
+    - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
         java-version: '17'
@@ -23,11 +22,11 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
-    - name: Build with Gradle
+    - name: Build Debug APK
       run: ./gradlew assembleDebug
 
-    - name: Upload APK
+    - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: app-debug
+        name: my-android-app
         path: app/build/outputs/apk/debug/app-debug.apk
